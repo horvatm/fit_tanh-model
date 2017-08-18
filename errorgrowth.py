@@ -35,14 +35,16 @@ def dmodel_dpars(x, p, norm = False):
     return np.array([p[2]*x*s, p[2]*s, t, np.ones(len(x), dtype=float)])
 
 '''
-  Fiting data:
+  Fitting model to the weather forecast uncentainty data
+  
+  Data:
   
     d = [[t_0 E_0], [t_1, E_1], ..., [t_{n-1}, E_{n-1}]]     
     
-  to model
+  Fitting model:
   
-    E(t) = A tanh(a t  + b ) + B            for norm=false
-    E(t) = 1 + c[tanh(at + b) − tanh(b)]    for norm=true
+    E(t) = A tanh(a t  + b ) + B            for norm=False
+    E(t) = 1 + c[tanh(at + b) − tanh(b)]    for norm=True
     
   Input:
     times:1D numpy array of floats
@@ -50,8 +52,8 @@ def dmodel_dpars(x, p, norm = False):
     norm: boolean
   
   Return:
-    [a, b, c]         for norm=true
-    [a, b, A, B]      for norm=false
+    [a, b, c]         for norm=True
+    [a, b, A, B]      for norm=False
 '''
 
 def fit_model(t, E, w = None, norm = False):
