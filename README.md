@@ -9,7 +9,10 @@ is fitted with the model
     E(t) = A tanh(a t  + b ) + B            for norm=false
     E(t) = 1 + c[tanh(a t + b) − tanh(b)]    for norm=true
 
-where *t* is the time and *E* is the root-mean-square (r.m.s.) error.
+where *t* is the time and *E* is the root-mean-square (r.m.s.) error. We consider two types of data: 
+```
+normalized data with E(0)=1 (norm = true) and un-normalized/raw data (norm = false)
+```
 
 The routine **fit_model** in errorgrowth.py returns:
 
