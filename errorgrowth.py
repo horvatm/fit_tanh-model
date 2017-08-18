@@ -38,7 +38,7 @@ def dmodel_dpars(x, p, norm = False):
   Fiting data:
   
     d = [[t_0 E_0], [t_1, E_1], ..., [t_{n-1}, E_{n-1}]]     
-  
+    
   to model
   
     E(t) = A tanh(a t  + b ) + B            for norm=false
@@ -58,12 +58,18 @@ def fit_model(t, E, w = None, norm = False):
   
   x = np.array(t)
   y = np.array(E)
+  n = len(x)
   
+  # sorting data
+  a = np.array([x,y]).T
+  x, y = a[a[:,0].argsort()].T
+  
+  # rescale to normalized data
   scale = y[0]
   y /= scale
   
-  n = len(x)
-  
+  ymax = np.amax(y)  
+    
   if w is None:
     w = np.ones(n)
   
@@ -75,8 +81,10 @@ def fit_model(t, E, w = None, norm = False):
   
   min_kwargs = {"method": "BFGS", "jac": df, "tol": 1e-6}
   
-  p0 = np.ones(4)
-  
+  # init parameter: 
+  #   assuming E ~ A tanh(a t) + B 
+  #   x_0 ~ 0, y[0] = 1 
+  p0 = np.array([(y[1] - 1)/(ymax - 1)/(x[1] - x[0]), 0., ymax - 1, 1.])
   T = f(p0)
   
   res = scipy.optimize.basinhopping(f, p0, T = T, minimizer_kwargs = min_kwargs, niter=200)
